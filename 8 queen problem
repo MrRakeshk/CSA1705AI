@@ -1,0 +1,29 @@
+def is_safe(board, row, col):
+    return all(
+        board[i][col] == 0 and 
+        board[row][j] == 0 and
+        (row - i) != abs(col - j)
+        for i, j in zip(range(row), range(col, -1, -1))
+    )
+
+def solve_queens(board, row):
+    if row >= len(board):
+        return True
+    for col in range(len(board)):
+        if is_safe(board, row, col):
+            board[row][col] = 1
+            if solve_queens(board, row + 1):
+                return True
+            board[row][col] = 0
+    return False
+
+def print_solution(board):
+    for row in board:
+        print(" ".join(map(str, row)))
+
+board = [[0] * 8 for _ in range(8)]
+if solve_queens(board, 0):
+    print("Solution found:")
+    print_solution(board)
+else:
+    print("No solution exists.")
